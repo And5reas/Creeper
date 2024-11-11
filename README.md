@@ -1,2 +1,6 @@
-# Creeper
-Projeto para o trabalho Gigantes de MDF, da matéria de programação de hardware, Universidade Santa Cecília.
+# Creeper - Gigantes de MDF (MDF giants)
+
+## Computer engineering project for the hardware programming discipline - UNISANTA
+
+The propose of this project is to create a robot that can move and shoot lasers for a battle, using a microcontroller and a, of course, laser.
+
