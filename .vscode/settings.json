@@ -2,6 +2,8 @@
     "files.associations": {
         "motorctl.h": "c",
         "io.h": "c",
-        "iom328p.h": "c"
+        "iom328p.h": "c",
+        "motorctl.c": "cpp",
+        "internetesp.h": "c"
     }
 }

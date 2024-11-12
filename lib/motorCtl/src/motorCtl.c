@@ -1,5 +1,5 @@
-#include <motorCtl.h>
 #include <avr/io.h>
+#include "motorCtl.h"
 
 void setup_PINs(){
     DDRB |= (1 << MOTOR2CTL_DIR_D) 
