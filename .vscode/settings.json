@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "motorctl.h": "c",
+        "io.h": "c",
+        "iom328p.h": "c"
+    }
+}
