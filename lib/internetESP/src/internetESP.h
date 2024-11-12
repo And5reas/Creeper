@@ -1,5 +1,4 @@
 #ifndef INTERNET_ESP_H
-#include <avr\io.h>
 
 #define FREC_CPU 16000000UL
 
