@@ -1,6 +1,6 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
-#include <motorCtl.c>
+#include "motorCtl.c"
 
 int main(void)
 {
