@@ -24,10 +24,5 @@
 
 void USART_Start();
 void USART_TransmitPolling(uint8_t DataType);
-void testing();
-void showVersion();
-void setMode();
-void showWifi();
-void wifiLogin();
 
 #endif
