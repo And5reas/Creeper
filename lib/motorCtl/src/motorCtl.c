@@ -1,51 +1,61 @@
 #include <avr/io.h>
 #include "motorCtl.h"
 
-void setup_PINs(){
-    DDRB |= (1 << MOTOR2CTL_DIR_D) 
+void motorCtl_init(){
+    DDRB |= (1 << MOTOR1CTL_DIR_E) 
          |  (1 << SERVOMOTOR_DIR);
 
-    DDRD |= (1 << MOTOR1CTL_DIR_E)
-         |  (1 << MOTOR1CTL_DIR_D)
-         |  (1 << MOTOR2CTL_DIR_E);
+    DDRD |= (1 << MOTOR1CTL_DIR_D)
+         |  (1 << MOTOR2CTL_DIR_E)
+         |  (1 << MOTOR2CTL_DIR_D);
 }
 
-void setPWM_servo(char SERVO_DEG) {
-    OCR2A = SERVO_DEG;
-}
-
-void setupPWM_Servo() {
-    // Set up the PWM timer
+void PWM_motors_init() {
+    // Set up the servo PWM timer
     TCCR2A = CONFIG_TCCR2A;
     TCCR2B = CONFIG_TCCR2B;
-    setPWM_servo(85);
+    alt_ServoAng(85); // Aprox 90 degrees
+
+    TIMSK2 |= (1 << OCIE2B);
+    motorCtl_setSpeed(255);
+}
+
+void motorCtl_setSpeed(char speed) {
+    OCR2B = speed;
+}
+
+void alt_ServoAng(char SERVO_DEG) {
+    OCR2A = SERVO_DEG;
 }
 
 void motorCtl(char mode) {
     switch (mode)
     {
-    case 0:
-        PORTD |=  (1 << MOTOR1CTL_DIR_D);
-        PORTD &= ~(1 << MOTOR1CTL_DIR_E);
+    case 'F':
+        // Go forward
+        PORTD ^= (1 << MOTOR1CTL_DIR_D);
+        PORTD ^= (1 << MOTOR2CTL_DIR_D);
         break;
-    case 1:
-        PORTD &= ~(1 << MOTOR1CTL_DIR_D);
-        PORTD |=  (1 << MOTOR1CTL_DIR_E);
+    case 'T':
+        // Go backward
+        PORTB ^= (1 << MOTOR1CTL_DIR_E);
+        PORTD ^= (1 << MOTOR2CTL_DIR_E);
         break;
-    case 2:
-        PORTD |=  (1 << MOTOR2CTL_DIR_E);
-        PORTB &= ~(1 << MOTOR2CTL_DIR_D);
+    case 'E':
+        // Turn left
+        PORTB ^= (1 << MOTOR1CTL_DIR_E);
+        PORTD ^= (1 << MOTOR2CTL_DIR_D);
         break;
-    case 3:
-        PORTD &= ~(1 << MOTOR2CTL_DIR_E);
-        PORTB |=  (1 << MOTOR2CTL_DIR_D);
+    case 'D':
+        // Turn right
+        PORTD ^= (1 << MOTOR1CTL_DIR_D);
+        PORTD ^= (1 << MOTOR2CTL_DIR_E);
         break;
-    case 4:
-        PORTD |=  (1 << MOTOR1CTL_DIR_D);
-        PORTB |=  (1 << MOTOR2CTL_DIR_D);
     default:
-        PORTD  = 0;
-        PORTB  = 0;
-        break;
+        // Stop motors
+        PORTB &= ~(1 << MOTOR1CTL_DIR_E);
+        PORTD &= ~(1 << MOTOR2CTL_DIR_E);
+        PORTD &= ~(1 << MOTOR1CTL_DIR_D);
+        PORTD &= ~(1 << MOTOR2CTL_DIR_D);
     }
 }

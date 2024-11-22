@@ -4,6 +4,8 @@
         "io.h": "c",
         "iom328p.h": "c",
         "motorctl.c": "cpp",
-        "internetesp.h": "c"
+        "internetesp.h": "c",
+        "internetesp.c": "cpp",
+        "laser.h": "c"
     }
 }

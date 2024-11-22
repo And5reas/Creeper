@@ -1,20 +1,44 @@
+#include <avr\interrupt.h>
+#include <util\delay.h>
 #include "motorCtl.c"
 #include "internetESP.c"
-#include <util\delay.h>
+#include "laser.c"
 
-int main(void)
+volatile uint8_t USART_ReceiveBuffer;
+
+ISR(TIMER2_COMPB_vect)
 {
-  USART_Start();
+    motorCtl(USART_ReceiveBuffer);
+}
 
-  setup_PINs();
-  setupPWM_Servo();
+ISR(USART_RX_vect)
+{
+    USART_ReceiveBuffer = UDR0;
 
-  while (1)
-  {
-    showVersion();
-    _delay_ms(1000);
-  }
-  
+    if (USART_ReceiveBuffer == 'L') {
+        // Initialize the laser timer1
+        laserCtl_init();
+    }
+}
 
-  return 0;
+int main() {
+    // Cleaning the global interrupt flag
+    cli();
+
+    // Initialize the motors control pins
+    motorCtl_init();
+    PWM_motors_init();
+    
+    // Initialize the serial communication
+    USART_init();
+
+    // Initialize the global interrupt flag
+    sei();
+
+    while(1) {
+        if (TCNT1 >= 62499)
+            laserCtl_stop();
+    }
+
+    return 0;
 }
